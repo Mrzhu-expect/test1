@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Upload</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: sans-serif;
+    }
+    body {
+      background-color: #f8fafc;
+      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* 左侧文本区域 */
+    .text-section {
+      position: absolute;
+      top: 124px;
+      left: 102px;
+    }
+    .text-section .h2 {
+      width: 394px;
+      height: 110px;
+      font-weight: 400;
+      font-style: normal;
+      font-size: 40px;
+      line-height: 55px;
+      letter-spacing: 0%;
+      vertical-align: middle;
+      color: #000000;
+    }
+    .text-section .h2:nth-child(2) {
+      width: 394px;
+      height: 110px;
+      font-weight: 400;
+      font-style: normal;
+      font-size: 40px;
+      line-height: 20px;
+      letter-spacing: 0%;
+      vertical-align: middle;
+      color: #000000;
+    }
+    .text-section .ptext {
+      width: 696px;
+      height: 70px;
+      margin-top: 20px;
+      font-weight: 400;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 35px;
+      letter-spacing: 0%;
+      vertical-align: middle;
+      color: #a5a5a5;
+    }
+
+    /* 左侧图片区域 */
+    .left-img {
+      position: absolute;
+      width: 763px;
+      height: 569px;
+      top: 511px;
+      left: 0px;
+      background: url('12234.png') no-repeat center/contain;
+    }
+
+    /* 右侧上传区域 */
+    .upload-section {
+      position: absolute;
+      width: 943px;
+      height: 922px;
+      top: 103px;
+      left: 875px;
+      border-radius: 32px;
+      background-color: #fff;
+      box-shadow: 0 2px 20px 0 rgba(19, 67, 112, 0.15);
+      padding: 30px;
+    }
+    .upload-h {
+      width: 241px;
+      height: 35px;
+      font-size: 28px;
+      font-weight: 500;
+      color: #000;
+      margin-bottom: 20px;
+    }
+
+    /* 上传区域容器 */
+    .upload-area {
+      width: 100%;
+      height: 320px;
+      border: 2px dashed #d1d5db;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
+    .upload-area:hover {
+      border-color: #3b82f6;
+      background-color: #f2faff;
+    }
+    .upload-icon {
+      width: 40px;
+      height: 40px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%233b82f6"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>') no-repeat center/contain;
+    }
+    .upload-tip {
+      color: #6b7280;
+      font-size: 16px;
+      text-align: center;
+      line-height: 24px;
+    }
+
+    /* 按钮区域 - 已实现横向居中 */
+    .btn-group {
+      margin-top: 40px;
+      display: flex;
+      gap: 20px;
+      width: 100%; /* 撑满父容器 */
+      justify-content: center; /* 横向居中核心样式 */
+    }
+    .btn {
+      padding: 12px 32px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+    .btn.last-step {
+      background-color: #93c5fd;
+      color: #fff;
+    }
+    .btn.finish {
+      background-color: #3b82f6;
+      color: #fff;
+    }
+    .btn:hover {
+      opacity: 0.9;
+    }
+    .btn:active {
+      opacity: 0.8;
+    }
+
+    /* 进度条 - 已缩短步骤1、2、3间距（贴合原图） */
+    .progress {
+      margin-top: 40px;
+      display: flex;
+      align-items: center;
+      gap: 8px; /* 缩短间距，替换原有24px，贴合原图效果 */
+      width: fit-content; /* 自适应宽度，避免进度条过长 */
+      margin-left: auto; /* 可选：若需要进度条也居中，保留这两行；不需要则删除 */
+      margin-right: auto;
+    }
+    .progress-item {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: #3b82f6;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+    .progress-line {
+      flex: none; /* 取消弹性拉伸，避免线条过长 */
+      width: 60px; /* 固定线条宽度，贴合原图短间距效果 */
+      height: 2px;
+      background-color: #e5e7eb;
+      position: relative;
+    }
+    .progress-line.active {
+      background-color: #3b82f6;
+    }
+
+    /* 响应式适配（小屏/移动端） */
+    @media (max-width: 1600px) {
+      .text-section, .left-img, .upload-section {
+        position: static;
+        margin: 0 auto;
+      }
+      .text-section {
+        padding: 40px 20px 0;
+      }
+      .left-img {
+        margin: 40px auto;
+      }
+      .upload-section {
+        width: 90%;
+        height: auto;
+        margin: 40px auto 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 左侧文本区域 -->
+  <div class="text-section">
+    <h2 class="h2">Finish!</h2>
+    <h2 class="h2">Upload Your Resume</h2>
+    <p class="ptext">Upload your resume, the platform will help you parse and optimize, you can also skip this step</p>
+  </div>
+
+  <!-- 左侧图片区域 -->
+  <div class="left-img"></div>
+
+  <!-- 右侧上传区域 -->
+  <div class="upload-section">
+    <h3 class="upload-h">Upload file</h3>
+    
+    <!-- 上传区域 -->
+    <div class="upload-area" id="uploadArea">
+      <div class="upload-icon"></div>
+      <p class="upload-tip">Drag your resume file to this area, or click on the area to select the appropriate file to upload</p>
+      <input type="file" id="fileInput" style="display: none;" accept=".pdf,.doc,.docx">
+    </div>
+
+    <!-- 按钮组 - 已横向居中 -->
+    <div class="btn-group">
+      <button class="btn last-step">Last step</button>
+      <button class="btn finish">Finish</button>
+    </div>
+
+    <!-- 进度条 - 步骤间距已缩短 -->
+    <div class="progress">
+      <div class="progress-item">1</div>
+      <div class="progress-line active"></div>
+      <div class="progress-item">2</div>
+      <div class="progress-line active"></div>
+      <div class="progress-item">3</div>
+    </div>
+  </div>
+
+  <script>
+    // 上传区域交互：点击打开文件选择框
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    uploadArea.addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    // 显示上传文件名
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        uploadArea.querySelector('.upload-tip').textContent = `Selected: ${file.name}`;
+      }
+    });
+  </script>
+</body>
+</html>
